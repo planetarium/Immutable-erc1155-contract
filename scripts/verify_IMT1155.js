@@ -2,7 +2,7 @@ const { run } = require("hardhat");
 
 async function main() {
     // 배포된 컨트랙트의 주소 입력
-    const contractAddress = "0x39e89f5040E6A1dDbD4cC56b721782F30ceCa88d";
+    const contractAddress = "0x08A0C6b3f4cD880ecc3bAf46D8A5B205Dce3BA7f";
 
     // 컨트랙트 생성자 인자 설정
     const constructorArguments = [

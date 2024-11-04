@@ -10,6 +10,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     string public symbol;
     uint256 public currentTokenId;
     bool public transferEnabled;
+    address public MINTER;
 
     constructor(
         string memory _name,
@@ -24,8 +25,18 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         symbol = _symbol;
         currentTokenId = 0;
         transferEnabled = false;
+        MINTER = owner();
 
         _setOperatorAllowlistRegistry(operatorAllowlist);
+    }
+
+    modifier onlyMinter() {
+        require(msg.sender == owner() || msg.sender == MINTER, "Not authorized");
+        _;
+    }
+
+    function setMinter(address _minter) external onlyOwner {
+        MINTER = _minter;
     }
 
     // Change the base URI
@@ -38,7 +49,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     }
 
 
-    function mint(address account, uint256 amount, bytes memory data) public onlyOwner {
+    function mint(address account, uint256 amount, bytes memory data) public onlyMinter {
         _mint(account, currentTokenId, amount, data);
         currentTokenId++;
     }
@@ -53,7 +64,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         bytes memory data
     ) internal override {
         if (!transferEnabled) {
-            require(from == address(0), "SBTs cannot be transferred");
+            require(from == address(0), "Token cannot be transferred");
         }
     }
 
