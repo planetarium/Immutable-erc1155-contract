@@ -8,7 +8,6 @@ import {OperatorAllowlistEnforced} from '@imtbl/contracts/contracts/allowlist/Op
 contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     string public name;
     string public symbol;
-    uint256 public currentTokenId;
     bool public transferEnabled;
     address public MINTER;
 
@@ -23,7 +22,6 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     {
         name = _name;
         symbol = _symbol;
-        currentTokenId = 0;
         transferEnabled = false;
         MINTER = owner();
 
@@ -49,9 +47,16 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     }
 
 
-    function mint(address account, uint256 amount, bytes memory data) public onlyMinter {
-        _mint(account, currentTokenId, amount, data);
-        currentTokenId++;
+    function mint(address account, uint256 tokenId, uint256 amount, bytes memory data) public onlyMinter {
+        _mint(account, tokenId, amount, data);
+    }
+
+    function burn(address account, uint256 id, uint256 amount) public onlyMinter {
+        _burn(account, id, amount);
+    }
+
+    function burnBatch(address account, uint256[] memory ids, uint256[] memory amounts) public onlyMinter {
+        _burnBatch(account, ids, amounts);
     }
 
     // Override  _beforeTokenTransfer to customize the transfer behavior
