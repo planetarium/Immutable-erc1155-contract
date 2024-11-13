@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import {OperatorAllowlistEnforced} from '@imtbl/contracts/contracts/allowlist/OperatorAllowlistEnforced.sol';
+import { OperatorAllowlistEnforced } from '@imtbl/contracts/contracts/allowlist/OperatorAllowlistEnforced.sol';
 
 contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     string public name;
@@ -46,7 +46,6 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         transferEnabled = _enabled;
     }
 
-
     function mint(address account, uint256 tokenId, uint256 amount, bytes memory data) public onlyMinter {
         _mint(account, tokenId, amount, data);
     }
@@ -69,7 +68,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         bytes memory data
     ) internal override {
         if (!transferEnabled) {
-            require(from == address(0), "Token cannot be transferred");
+            require(from == address(0) || to == address(0), "Token cannot be transferred");
         }
     }
 
