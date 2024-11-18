@@ -3,27 +3,32 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import { OperatorAllowlistEnforced } from '@imtbl/contracts/contracts/allowlist/OperatorAllowlistEnforced.sol';
 
 contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
+    using Strings for uint256;
+
     string public name;
     string public symbol;
     bool public transferEnabled;
     address public MINTER;
+    string private baseURI;
 
     constructor(
         string memory _name,
         string memory _symbol,
-        string memory _uri,
+        string memory _baseURI,
         address operatorAllowlist
     )
-    ERC1155(_uri)
+    ERC1155(_baseURI)
     Ownable()
     {
         name = _name;
         symbol = _symbol;
         transferEnabled = false;
         MINTER = owner();
+        baseURI = _baseURI; // baseURI 초기화
 
         _setOperatorAllowlistRegistry(operatorAllowlist);
     }
@@ -37,9 +42,15 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         MINTER = _minter;
     }
 
-    // Change the base URI
     function setURI(string memory newURI) public onlyOwner {
+        baseURI = newURI; // baseURI 업데이트
         _setURI(newURI);
+    }
+
+    // uri function override
+    function uri(uint256 tokenId) public view override returns (string memory) {
+        // return URI 반환
+        return string(abi.encodePacked(baseURI, tokenId.toString(), ".json"));
     }
 
     function setTransferEnabled(bool _enabled) external onlyOwner {
@@ -58,7 +69,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
         _burnBatch(account, ids, amounts);
     }
 
-    // Override  _beforeTokenTransfer to customize the transfer behavior
+    // Override _beforeTokenTransfer to customize the transfer behavior
     function _beforeTokenTransfer(
         address operator,
         address from,
