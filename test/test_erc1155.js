@@ -15,7 +15,7 @@ describe("Test Erc1155", function () {
     it("Should set the correct name, symbol, and URI", async function () {
         expect(await imt1155.name()).to.equal("TestToken");
         expect(await imt1155.symbol()).to.equal("TT");
-        expect(await imt1155.uri(1)).to.equal("https://example.com/");
+        expect(await imt1155.uri(1)).to.equal("https://example.com/1.json");
     });
 
     it("Should allow owner to set new URI", async function () {
@@ -23,7 +23,7 @@ describe("Test Erc1155", function () {
         await expect(imt1155.connect(addr1).setURI(newURI)).to.be.revertedWith("Ownable: caller is not the owner");
 
         await imt1155.connect(owner).setURI(newURI);
-        expect(await imt1155.uri(1)).to.equal(newURI);
+        expect(await imt1155.uri(1)).to.equal(newURI + "1.json");
     });
 
     it("Should allow owner to set setTransferEnabled", async function () {
@@ -38,6 +38,7 @@ describe("Test Erc1155", function () {
 
         await imt1155.mint(addr2.address, 1, 100, "0x");
         expect(await imt1155.balanceOf(addr2.address, 1)).to.equal(100);
+        expect(await imt1155.uri(1)).to.equal("https://example.com/1.json");
     });
 
     it("Should allow only minter to burn tokens", async function () {
@@ -81,5 +82,16 @@ describe("Test Erc1155", function () {
 
     it("Should allow only owner to set new minter", async function () {
         await expect(imt1155.connect(addr1).setMinter(addr1.address)).to.be.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("Should allow owner to update the baseURI and reflect in token URIs", async function () {
+        const newBaseURI = "https://newexample.com/";
+        await expect(imt1155.connect(addr1).setURI(newBaseURI)).to.be.revertedWith("Ownable: caller is not the owner");
+
+        await imt1155.connect(owner).setURI(newBaseURI);
+
+        // Verify the updated URI for a token
+        expect(await imt1155.uri(1)).to.equal("https://newexample.com/1.json");
+        expect(await imt1155.uri(2)).to.equal("https://newexample.com/2.json");
     });
 });
