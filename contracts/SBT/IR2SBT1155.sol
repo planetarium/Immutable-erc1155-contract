@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import { OperatorAllowlistEnforced } from '@imtbl/contracts/contracts/allowlist/OperatorAllowlistEnforced.sol';
 
-contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
+contract IR2SBT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
     using Strings for uint256;
 
     string public name;
@@ -49,7 +49,7 @@ contract IMT1155 is ERC1155, Ownable, OperatorAllowlistEnforced {
 
     // uri function override
     function uri(uint256 tokenId) public view override returns (string memory) {
-        // return URI 반환
+        // return URI
         return string(abi.encodePacked(baseURI, tokenId.toString(), ".json"));
     }
 
