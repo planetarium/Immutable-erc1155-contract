@@ -17,8 +17,8 @@ v0.8.19
 1. Create `.env` file with these keys
 ```shell
 ETHERSCAN_API_KEY=
-PRIVATE_KEY=
-
+PRIVATE_KEY_IMMUTABLEZKEVMTESTNET=
+PRIVATE_KEY_IMMUTABLEZKEVMMAINNET=
 ```
 
 2. Clean Cache & Install npm packages
@@ -40,7 +40,7 @@ npx hardhat compile
 
 4. deploy
 ```shell
-npx hardhat run scripts/deploy_IMT1155.js --network immutableZkevmTestnet
+npx hardhat run scripts/deploy_IR2SBT1155.js --network immutableZkevmMainnet
 ```
 
 4. run test & coverage
