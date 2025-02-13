@@ -3,6 +3,8 @@
 # Immutable zkEvm ERC-1155 Contract
 
 Try running some of the following tasks:
+- How to set up Immutable Contract Guide : https://docs.immutable.com/tutorials/zkEVM/deploy-contracts/setup
+- ERC1155 Example: https://docs.immutable.com/tutorials/zkevm/deploy-contracts/setup/?sample-contracts-with-oal=erc1155
 
 How to setup dev environment
 
@@ -23,7 +25,7 @@ PRIVATE_KEY_IMMUTABLEZKEVMMAINNET=
 
 2. Clean Cache & Install npm packages
 ```shell
-# Clean cache
+# If these are already exist, Clean cache
 rm -rf node_modules;
 rm -f package-lock.json;
 npm cache clean --force;
@@ -43,8 +45,13 @@ npx hardhat compile
 npx hardhat run scripts/deploy_IR2SBT1155.js --network immutableZkevmMainnet
 ```
 
-4. run test & coverage
+5. run test & coverage
 ```shell
 npx hardhat test
 npx hardhat coverage
 ```
+
+Additional Information
+- NFT ( ERC-721 & ERC-1155) Contract should implement OAL ( Operator Allowlist ) - Link(https://docs.immutable.com/tutorials/zkEVM/deploy-contracts/operator-allowlist)
+- Have to override some functions for OAL - Link ( https://docs.immutable.com/tutorials/zkEVM/deploy-contracts/setup#immutable-zkevm-collection-requirements )
+- Have to Request Verification at Immutable hub ( https://hub.immutable.com/ )

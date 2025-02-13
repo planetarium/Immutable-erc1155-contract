@@ -6,6 +6,7 @@ async function main() {
 
     /*
      * OAL Address Check
+     * https://docs.immutable.com/tutorials/zkEVM/deploy-contracts/operator-allowlist#operator-allowlist-values
      * Testnet = 0x6b969fd89de634d8de3271ebe97734feffcd58ee
      * Mainnet = 0x5f5eba8133f68ea22d712b0926e2803e78d89221
      */
